@@ -1,10 +1,672 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Mi Sitio Web</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Cristopher Tipá — writer, builder, and lifelong learner. A bilingual personal website showcasing projects, writing, reading, and ideas." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta property="og:title" content="Cristopher Tipá" />
+  <meta property="og:description" content="Writer. Builder. Lifelong learner. Projects, writing, and ideas from Mexico." />
+  <meta property="og:type" content="website" />
+  <title>Cristopher Tipá</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --panel: #111111;
+      --panel-2: #151515;
+      --text: #f5f5f5;
+      --muted: #a1a1aa;
+      --border: rgba(255,255,255,0.08);
+      --accent: #d4af37;
+      --accent-soft: rgba(212,175,55,0.16);
+      --shadow: 0 18px 50px rgba(0,0,0,0.45);
+      --radius: 22px;
+      --max: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(212,175,55,0.08), transparent 28%),
+        linear-gradient(180deg, #0a0a0a 0%, #090909 100%);
+      color: var(--text);
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button { font: inherit; }
+
+    .wrap { width: min(100% - 32px, var(--max)); margin: 0 auto; }
+    .topbar {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(10,10,10,0.72);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar .inner {
+      display: flex; align-items: center; justify-content: space-between;
+      min-height: 72px; gap: 16px;
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+      font-weight: 700; letter-spacing: 0.02em;
+    }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: linear-gradient(145deg, rgba(212,175,55,0.22), rgba(255,255,255,0.04));
+      border: 1px solid rgba(212,175,55,0.35);
+      color: var(--accent);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    .nav {
+      display: flex; gap: 18px; flex-wrap: wrap; justify-content: center;
+      color: var(--muted); font-size: 0.95rem;
+    }
+    .nav a:hover { color: var(--text); }
+    .controls { display: flex; align-items: center; gap: 10px; }
+    .pill {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      cursor: pointer;
+      transition: 0.25s ease;
+    }
+    .pill:hover { transform: translateY(-1px); border-color: rgba(212,175,55,0.35); }
+    .pill.active { background: var(--accent-soft); border-color: rgba(212,175,55,0.42); color: #fff; }
+
+    .hero {
+      padding: 72px 0 34px;
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 24px; align-items: stretch;
+    }
+    .panel {
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .hero-main {
+      padding: 42px;
+      overflow: hidden;
+      position: relative;
+    }
+    .hero-main::before {
+      content: "";
+      position: absolute; inset: auto -100px -120px auto;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(212,175,55,0.16), transparent 66%);
+      pointer-events: none;
+    }
+    .eyebrow {
+      color: var(--accent); text-transform: uppercase; letter-spacing: 0.18em;
+      font-size: 0.74rem; font-weight: 700; margin-bottom: 16px;
+    }
+    h1 {
+      font-size: clamp(3rem, 7vw, 5.6rem);
+      line-height: 0.95;
+      margin: 0 0 18px;
+      letter-spacing: -0.05em;
+    }
+    .lead {
+      max-width: 60ch;
+      color: #d8d8d8;
+      font-size: 1.08rem;
+      margin: 0 0 28px;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 12px; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 18px; border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      transition: 0.25s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: rgba(212,175,55,0.45); }
+    .btn.primary {
+      background: linear-gradient(145deg, rgba(212,175,55,0.95), rgba(182,146,32,0.88));
+      color: #111;
+      border-color: transparent;
+      font-weight: 700;
+    }
+    .hero-side {
+      display: grid;
+      grid-template-rows: 1fr auto;
+      gap: 18px;
+    }
+    .portrait {
+      padding: 22px;
+      display: grid;
+      place-items: center;
+      min-height: 360px;
+      position: relative;
+      overflow: hidden;
+    }
+    .portrait .circle {
+      width: min(100%, 280px);
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,0.16), transparent 24%),
+        radial-gradient(circle at 50% 50%, rgba(212,175,55,0.20), rgba(255,255,255,0.03) 48%, rgba(255,255,255,0.02) 74%, transparent 75%);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 24px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.03);
+    }
+    .portrait .initials {
+      width: 92px; height: 92px; border-radius: 50%;
+      display: grid; place-items: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(212,175,55,0.25);
+      color: var(--accent);
+      font-weight: 800; font-size: 1.8rem;
+      margin-bottom: 16px;
+    }
+    .portrait p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 22ch;
+    }
+    .meta {
+      padding: 20px 22px;
+      display: grid; gap: 10px;
+    }
+    .meta .row {
+      display: flex; justify-content: space-between; gap: 16px;
+      color: var(--muted); font-size: 0.95rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 10px;
+    }
+    .meta .row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .meta strong { color: var(--text); font-weight: 600; }
+
+    section { padding: 28px 0; }
+    .section-head {
+      display: flex; align-items: end; justify-content: space-between; gap: 18px;
+      margin-bottom: 18px;
+    }
+    .section-head h2 {
+      margin: 0; font-size: clamp(1.5rem, 3vw, 2.2rem);
+      letter-spacing: -0.03em;
+    }
+    .section-head p { margin: 0; color: var(--muted); max-width: 58ch; }
+
+    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .card {
+      padding: 22px;
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02));
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .card h3 { margin: 0 0 10px; font-size: 1.15rem; }
+    .card p { margin: 0; color: var(--muted); }
+    .tag-row {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px;
+    }
+    .tag {
+      font-size: 0.8rem; color: #dfdfdf;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.03);
+      padding: 7px 10px; border-radius: 999px;
+    }
+    .project-head {
+      display: flex; align-items: start; justify-content: space-between; gap: 12px;
+      margin-bottom: 8px;
+    }
+    .project-head .year { color: var(--accent); font-size: 0.9rem; white-space: nowrap; }
+    .links {
+      display: flex; gap: 12px; margin-top: 18px; flex-wrap: wrap;
+    }
+    .links a {
+      color: var(--text);
+      font-size: 0.95rem;
+      padding-bottom: 2px;
+      border-bottom: 1px solid rgba(255,255,255,0.16);
+    }
+    .links a:hover { border-bottom-color: var(--accent); }
+
+    .timeline {
+      display: grid; gap: 14px;
+    }
+    .timeline-item {
+      display: grid; grid-template-columns: 110px 1fr; gap: 18px;
+      padding: 18px 20px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+    }
+    .timeline-item .date { color: var(--accent); font-weight: 700; }
+    .timeline-item p { margin: 0; color: var(--muted); }
+
+    .reading-list { display: grid; gap: 14px; }
+    .book {
+      display: flex; justify-content: space-between; gap: 18px; align-items: start;
+      padding: 18px 20px; border-radius: 18px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid var(--border);
+    }
+    .book .author { color: var(--muted); margin-top: 4px; }
+    .book .note { color: var(--muted); max-width: 62ch; text-align: right; }
+
+    .blog-box {
+      display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: center;
+    }
+    .soon {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 8px 12px; border-radius: 999px;
+      background: var(--accent-soft); color: #fff;
+      border: 1px solid rgba(212,175,55,0.25);
+      font-size: 0.85rem;
+      white-space: nowrap;
+    }
+
+    .footer {
+      padding: 34px 0 42px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 26px;
+    }
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+    }
+    .small-links { display: flex; gap: 16px; flex-wrap: wrap; }
+    .small-links a:hover { color: var(--text); }
+
+    [data-lang] { display: none; }
+    [data-lang].active { display: block; }
+    span[data-lang].active { display: inline; }
+
+    @media (max-width: 960px) {
+      .hero-grid, .grid-2, .grid-3, .blog-box { grid-template-columns: 1fr; }
+      .topbar .inner { align-items: start; flex-direction: column; padding: 14px 0; }
+      .nav { justify-content: start; gap: 12px 16px; }
+      .hero { padding-top: 34px; }
+      .hero-main { padding: 28px; }
+      .timeline-item { grid-template-columns: 1fr; gap: 8px; }
+      .book { flex-direction: column; }
+      .book .note { text-align: left; }
+    }
+  </style>
 </head>
 <body>
-    <h1>¡Servidor Fantasma Activado!</h1>
-    <p>Próximamente mi portafolio optimizado aquí.</p>
+  <header class="topbar">
+    <div class="wrap inner">
+      <a class="brand" href="#home" aria-label="Cristopher Tipá home">
+        <div class="brand-mark">CT</div>
+        <div>
+          <div style="font-size:0.98rem;">Cristopher Tipá</div>
+          <div style="font-size:0.78rem; color:var(--muted);">Personal website</div>
+        </div>
+      </a>
+
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#about"><span data-lang="en" class="active">About</span><span data-lang="es">Acerca</span></a>
+        <a href="#projects"><span data-lang="en" class="active">Projects</span><span data-lang="es">Proyectos</span></a>
+        <a href="#writing"><span data-lang="en" class="active">Writing</span><span data-lang="es">Escritura</span></a>
+        <a href="#reading"><span data-lang="en" class="active">Reading</span><span data-lang="es">Lecturas</span></a>
+        <a href="#timeline"><span data-lang="en" class="active">Timeline</span><span data-lang="es">Línea de tiempo</span></a>
+        <a href="#contact"><span data-lang="en" class="active">Contact</span><span data-lang="es">Contacto</span></a>
+      </nav>
+
+      <div class="controls">
+        <button class="pill active" id="lang-en" type="button">EN</button>
+        <button class="pill" id="lang-es" type="button">ES</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="home" class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="panel hero-main">
+          <div class="eyebrow"><span data-lang="en" class="active">Mexican builder • writer • lifelong learner</span><span data-lang="es">Creador mexicano • escritor • comprometido con el aprendizaje continuo</span></div>
+          <h1>Cristopher<br/>Tipá</h1>
+          <p class="lead">
+            <span data-lang="en" class="active">I build software, write ideas, and explore the intersection of learning, technology, and creation. This site is my public notebook: calm, focused, and built to showcase my proyects</span>
+            <span data-lang="es">Construyo software, escribo ideas y exploro la intersección entre aprendizaje, tecnología y creación. Este sitio es mi cuaderno público: tranquilo, enfocado y diseñado para mostrar mis proyectos</span>
+          </p>
+          <div class="cta-row">
+            <a class="btn primary" href="#projects">
+              <span data-lang="en" class="active">Explore work</span><span data-lang="es">Explorar trabajo</span>
+            </a>
+            <a class="btn" href="https://github.com/CTipa-HQ" target="_blank" rel="noreferrer">
+              GitHub
+            </a>
+            <a class="btn" href="#contact">
+              <span data-lang="en" class="active">Contact</span><span data-lang="es">Contacto</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="panel portrait">
+            <div class="circle">
+              <div>
+                <div class="initials">CT</div>
+                <p>
+                  <span data-lang="en" class="active">Photo space ready. Replace this with your portrait when you have one.</span>
+                  <span data-lang="es">Espacio listo para foto. Cámbialo por tu retrato cuando tengas una buena imagen.</span>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="panel meta">
+            <div class="row"><span>GitHub</span><strong>CTipa-HQ</strong></div>
+            <div class="row"><span>Base</span><strong>Mexico</strong></div>
+            <div class="row"><span>Focus</span><strong>Writing + Code</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="section-head">
+        <div>
+          <h2><span data-lang="en" class="active">About</span><span data-lang="es">Acerca de mí</span></h2>
+        </div>
+        <p>
+          <span data-lang="en" class="active">A quiet introduction designed to feel deliberate, confident, and balanced.</span>
+          <span data-lang="es">Una presentación tranquila, diseñada para sentirse deliberada, segura y equilibrada.</span>
+        </p>
+      </div>
+      <div class="card">
+        <p>
+          <span data-lang="en" class="active">I am a young builder who values depth over noise. My interests span software, writing, learning, and the systems that shape how we think and create. This website is intentionally minimal because I believe meaningful work speaks louder than self-promotion.</span>
+          <span data-lang="es">Soy un joven creador que valora la profundidad por encima del ruido. Mis intereses abarcan el software, la escritura, el aprendizaje y los sistemas que moldean nuestra forma de pensar y crear. Este sitio es minimalista a propósito porque creo que el trabajo significativo habla más fuerte que la autopromoción.</span>
+        </p>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-head">
+        <div>
+          <h2><span data-lang="en" class="active">Projects</span><span data-lang="es">Proyectos</span></h2>
+        </div>
+        <p>
+          <span data-lang="en" class="active">A small but serious portfolio: software, games, and writing.</span>
+          <span data-lang="es">Un portafolio pequeño pero serio: software, juegos y escritura.</span>
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <article class="card">
+          <div class="project-head">
+            <h3>CFDI Speed-Reader</h3>
+            <div class="year">Python</div>
+          </div>
+          <p>
+            <span data-lang="en" class="active"> A Python automation system designed to process large volumes of Mexican CFDI invoices. It extracts critical fiscal data from XML files and generates import-ready Excel reports, transforming hours of repetitive manual work into a task completed in minutes.</span>
+            <span data-lang="es">Un sistema de automatización desarrollado en Python para procesar grandes volúmenes de facturas CFDI mexicanas. Extrae datos fiscales críticos desde archivos XML y genera reportes de Excel listos para importar, transformando horas de trabajo manual repetitivo en una tarea de minutos</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">Python</span>
+            <span class="tag">Pandas</span>
+            <span class="tag">Excel</span>
+            <span class="tag">Automation</span>
+            <span class="tag">CFDI</span>
+          </div>
+
+          <div class="links"><a href="https://github.com/CTipa-HQ" target="_blank" rel="noreferrer">GitHub</a></div>
+        </article>
+
+        <article class="card">
+          <div class="project-head">
+            <h3>Video Game Work</h3>
+            <div class="year">Creative</div>
+          </div>
+          <p>
+            <span data-lang="en" class="active">A space for game ideas, prototypes, mechanics, and worlds. This section can hold small games, design notes, or future releases.</span>
+            <span data-lang="es">Un espacio para ideas de juegos, prototipos, mecánicas y mundos. Esta sección puede contener juegos pequeños, notas de diseño o futuros lanzamientos.</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">Game Design</span><span class="tag">Prototype</span><span class="tag">Worldbuilding</span>
+          </div>
+          <div class="links"><a href="#writing"><span data-lang="en" class="active">See writing</span><span data-lang="es">Ver escritura</span></a></div>
+        </article>
+
+        <article class="card">
+          <div class="project-head">
+            <h3>Writing Projects</h3>
+            <div class="year">Essays / Books</div>
+          </div>
+          <p>
+            <span data-lang="en" class="active">An archive for essays, reflections, and future books. This is where your thinking becomes visible over time.</span>
+            <span data-lang="es">Un archivo para ensayos, reflexiones y futuros libros. Aquí tu pensamiento se vuelve visible con el tiempo.</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">Essays</span><span class="tag">Books</span><span class="tag">Ideas</span>
+          </div>
+          <div class="links"><a href="#contact"><span data-lang="en" class="active">Request collaboration</span><span data-lang="es">Pedir colaboración</span></a></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="writing">
+      <div class="section-head">
+        <div>
+          <h2><span data-lang="en" class="active">Writing</span><span data-lang="es">Escritura</span></h2>
+        </div>
+        <p>
+          <span data-lang="en" class="active">Ready for future posts. For now, this section shows the direction and tone.</span>
+          <span data-lang="es">Listo para futuras publicaciones. Por ahora, esta sección muestra la dirección y el tono.</span>
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <article class="card">
+          <div class="project-head">
+            <h3><span data-lang="en" class="active">Coming soon</span><span data-lang="es">Próximamente</span></h3>
+            <div class="year">Blog</div>
+          </div>
+          <p>
+            <span data-lang="en" class="active">This section is ready for your future essays, but you do not need to publish yet. It can stay quiet until your ideas are fully formed.</span>
+            <span data-lang="es">Esta sección ya está lista para tus futuros ensayos, pero no necesitas publicar todavía. Puede permanecer en silencio hasta que tus ideas estén más maduras.</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">Drafts</span><span class="tag">Essays</span><span class="tag">Reflection</span>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="project-head">
+            <h3><span data-lang="en" class="active">Suggested topics</span><span data-lang="es">Temas sugeridos</span></h3>
+            <div class="year">Draft ideas</div>
+          </div>
+          <p>
+            <span data-lang="en" class="active">Write about learning, psychology, discipline, game development, technology, and your own growth. That combination feels authentic and strong.</span>
+            <span data-lang="es">Escribe sobre aprendizaje, psicología, disciplina, desarrollo de videojuegos, tecnología y tu propio crecimiento. Esa combinación se siente auténtica y fuerte.</span>
+          </p>
+          <div class="tag-row">
+            <span class="tag">Psychology</span><span class="tag">Learning</span><span class="tag">Strategy</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="reading">
+      <div class="section-head">
+        <div>
+          <h2><span data-lang="en" class="active">Reading list</span><span data-lang="es">Lista de lectura</span></h2>
+        </div>
+        <p>
+          <span data-lang="en" class="active">A small list makes the page feel thoughtful instead of crowded.</span>
+          <span data-lang="es">Una lista pequeña hace que la página se sienta reflexiva en vez de saturada.</span>
+        </p>
+      </div>
+
+      <div class="reading-list">
+        <div class="book">
+          <div>
+            <strong>Think clearly, build clearly</strong>
+            <div class="author">Personal reading path</div>
+          </div>
+          <div class="note"><span data-lang="en" class="active">This can later include the books and authors that shaped your thinking.</span><span data-lang="es">Aquí después pueden ir los libros y autores que formaron tu pensamiento.</span></div>
+        </div>
+        <div class="book">
+          <div>
+            <strong>Psychology & persuasion</strong>
+            <div class="author">Notes and insights</div>
+          </div>
+          <div class="note"><span data-lang="en" class="active">A place for short reflections after reading.</span><span data-lang="es">Un lugar para reflexiones breves después de leer.</span></div>
+        </div>
+        <div class="book">
+          <div>
+            <strong>Philosophy and discipline</strong>
+            <div class="author">Long-term growth</div>
+          </div>
+          <div class="note"><span data-lang="en" class="active">Helps the site feel intelligent and personal.</span><span data-lang="es">Ayuda a que el sitio se sienta inteligente y personal.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="timeline">
+      <div class="section-head">
+        <div>
+          <h2><span data-lang="en" class="active">Timeline</span><span data-lang="es">Línea de tiempo</span></h2>
+        </div>
+        <p>
+          <span data-lang="en" class="active">A simple trajectory section. Visitors remember growth more than static claims.</span>
+          <span data-lang="es">Una sección simple de trayectoria. La gente recuerda el crecimiento más que las afirmaciones estáticas.</span>
+        </p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="date">2024</div>
+          <p><span data-lang="en" class="active">Deepened self-study across writing, psychology, and systems thinking.</span><span data-lang="es">Profundicé el autoestudio en escritura, psicología y pensamiento de sistemas.</span></p>
+        </div>
+        <div class="timeline-item">
+          <div class="date">2025</div>
+          <p><span data-lang="en" class="active">Built automation projects in Python and began shaping a personal brand.</span><span data-lang="es">Construí proyectos de automatización en Python y empecé a dar forma a una marca personal.</span></p>
+        </div>
+        <div class="timeline-item">
+          <div class="date">2026</div>
+          <p><span data-lang="en" class="active">Creating a minimal, bilingual site that will grow with future work.</span><span data-lang="es">Creando un sitio minimalista y bilingüe que crecerá con el trabajo futuro.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <section id="resume">
+      <div class="section-head">
+        <div>
+          <h2><span data-lang="en" class="active">Resume / CV</span><span data-lang="es">Currículum</span></h2>
+        </div>
+        <p>
+          <span data-lang="en" class="active">You can add a PDF later. For now, this section is a clean placeholder.</span>
+          <span data-lang="es">Puedes agregar un PDF después. Por ahora, esta sección es un espacio limpio.</span>
+        </p>
+      </div>
+      <div class="card">
+        <p>
+          <span data-lang="en" class="active">Add a downloadable resume here when you are ready. A simple button to a PDF works perfectly for GitHub Pages.</span>
+          <span data-lang="es">Agrega aquí tu currículum descargable cuando estés listo. Un botón simple a un PDF funciona perfecto en GitHub Pages.</span>
+        </p>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-head">
+        <div>
+          <h2><span data-lang="en" class="active">Contact</span><span data-lang="es">Contacto</span></h2>
+        </div>
+        <p>
+          <span data-lang="en" class="active">Minimal, direct, and professional.</span>
+          <span data-lang="es">Minimal, directo y profesional.</span>
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Email</h3>
+          <p><a href="mailto:your.email@example.com">cristophertipa@gmail.com</a></p>
+          <div class="tag-row">
+            <span class="tag">Opportunities</span><span class="tag">Collabs</span><span class="tag">Writing</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>GitHub</h3>
+          <p><a href="https://github.com/CTipa-HQ" target="_blank" rel="noreferrer">github.com/CTipa-HQ</a></p>
+          <div class="tag-row">
+            <span class="tag">Code</span><span class="tag">Projects</span><span class="tag">Updates</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="blog">
+      <div class="section-head">
+        <div>
+          <h2><span data-lang="en" class="active">Writing system</span><span data-lang="es">Sistema de escritura</span></h2>
+        </div>
+        <p>
+          <span data-lang="en" class="active">A blog-ready space without pressure to publish immediately.</span>
+          <span data-lang="es">Un espacio listo para blog sin la presión de publicar de inmediato.</span>
+        </p>
+      </div>
+      <div class="card blog-box">
+        <div>
+          <div class="eyebrow" style="margin-bottom:10px;">Journal • Essays • Notes</div>
+          <h3 style="margin-top:0;">
+            <span data-lang="en" class="active">Built for future posts</span><span data-lang="es">Construido para futuras publicaciones</span>
+          </h3>
+          <p>
+            <span data-lang="en" class="active">This section is ready to become a blog whenever you decide to publish. Until then, it keeps the structure in place and the page feeling complete.</span>
+            <span data-lang="es">Esta sección está lista para convertirse en blog cuando decidas publicar. Mientras tanto, mantiene la estructura y hace que la página se sienta completa.</span>
+          </p>
+        </div>
+        <div class="soon">
+          <span data-lang="en" class="active">Coming soon</span><span data-lang="es">Próximamente</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <div>© <span id="year"></span> Cristopher Tipá</div>
+      <div class="small-links">
+        <a href="#home"><span data-lang="en" class="active">Top</span><span data-lang="es">Inicio</span></a>
+        <a href="https://github.com/CTipa-HQ" target="_blank" rel="noreferrer">GitHub</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const buttons = {
+      en: document.getElementById('lang-en'),
+      es: document.getElementById('lang-es')
+    };
+
+    function setLanguage(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll('[data-lang]').forEach((el) => {
+        el.classList.toggle('active', el.getAttribute('data-lang') === lang);
+      });
+      buttons.en.classList.toggle('active', lang === 'en');
+      buttons.es.classList.toggle('active', lang === 'es');
+      localStorage.setItem('site-lang', lang);
+    }
+
+    buttons.en.addEventListener('click', () => setLanguage('en'));
+    buttons.es.addEventListener('click', () => setLanguage('es'));
+
+    const saved = localStorage.getItem('site-lang');
+    setLanguage(saved === 'es' ? 'es' : 'en');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
